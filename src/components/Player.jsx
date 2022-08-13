@@ -6,6 +6,7 @@ import {
 	faPause,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { playAudio } from "../util/util";
 
 function Player({
 	isPlaying,
@@ -70,10 +71,14 @@ function Player({
 		if (direction === "skip-back") {
 			if ((currentIndex - 1) % songs.length === -1) {
 				setCurrentSong(songs[songs.length - 1]);
+				// CHECK IF THE SONG IS PLAYING
+				playAudio(isPlaying, audioRef);
 				return;
 			}
 			setCurrentSong(songs[(currentIndex - 1) % songs.length]);
 		}
+		// CHECK IF THE SONG IS PLAYING
+		playAudio(isPlaying, audioRef);
 	};
 
 	return (
@@ -87,7 +92,7 @@ function Player({
 					value={songInfo.currentTime}
 					type='range'
 				/>
-				<p>{getTime(songInfo.duration)}</p>
+				<p>{songInfo.duration ? getTime(songInfo.duration) : "0:00"}</p>
 			</div>
 			<div className='play-control'>
 				<FontAwesomeIcon
