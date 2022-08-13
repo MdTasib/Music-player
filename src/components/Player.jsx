@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
 	faAngleLeft,
 	faAngleRight,
@@ -14,9 +14,28 @@ function Player({
 	setSongInfo,
 	songInfo,
 	songs,
+	setSongs,
 	currentSong,
 	setCurrentSong,
 }) {
+	// ADD ACTIVE STATE
+	useEffect(() => {
+		const newSongs = songs.map(song => {
+			if (song.id === currentSong.id) {
+				return {
+					...song,
+					active: true,
+				};
+			} else {
+				return {
+					...song,
+					active: false,
+				};
+			}
+		});
+		setSongs(newSongs);
+	}, [currentSong]);
+
 	// PLAYER TIME LINE DRAG HANDLER
 	const dragHandler = e => {
 		audioRef.current.currentTime = e.target.value;
