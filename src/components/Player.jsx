@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
 	faAngleLeft,
 	faAngleRight,
@@ -39,7 +39,7 @@ function Player({ isPlaying, setIsPlaying, audioRef, setSongInfo, songInfo }) {
 				<input
 					onChange={dragHandler}
 					min={0}
-					max={songInfo.duration}
+					max={songInfo.duration || 0}
 					value={songInfo.currentTime}
 					type='range'
 				/>
