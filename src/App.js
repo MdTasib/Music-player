@@ -16,13 +16,26 @@ function App() {
 	const [songInfo, setSongInfo] = useState({
 		duration: 0,
 		currentTime: 0,
+		animationPercentage: 0,
 	});
 
 	//  GET PLAYER TIME UPDATE
 	const timeUpdateHandler = e => {
 		const duration = e.target.duration;
 		const currentTime = e.target.currentTime;
-		setSongInfo({ ...songInfo, duration, currentTime });
+
+		// CALCULATE PERCENTAGE
+		const roundedCurrent = Math.round(currentTime);
+		const roundedDuration = Math.round(duration);
+		const animation = Math.round((roundedCurrent / roundedDuration) * 100);
+		console.log(animation);
+
+		setSongInfo({
+			...songInfo,
+			duration,
+			currentTime,
+			animationPercentage: animation,
+		});
 	};
 
 	return (
