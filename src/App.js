@@ -28,7 +28,6 @@ function App() {
 		const roundedCurrent = Math.round(currentTime);
 		const roundedDuration = Math.round(duration);
 		const animation = Math.round((roundedCurrent / roundedDuration) * 100);
-		console.log(animation);
 
 		setSongInfo({
 			...songInfo,
@@ -38,8 +37,15 @@ function App() {
 		});
 	};
 
+	// HANDLE AUDIO END - IF AUDIO ENDED. THEN PLAY NEXT AUDIO
+	const handleAudioEnd = async () => {
+		const currentIndex = songs.findIndex(song => song.id === currentSong.id);
+		await setCurrentSong(songs[(currentIndex + 1) % songs.length]);
+		if (isPlaying) audioRef.current.play();
+	};
+
 	return (
-		<div>
+		<div className={`App ${libraryStatus ? "library-active" : ""}`}>
 			<Nav libraryStatus={libraryStatus} setLibraryStatus={setLibraryStatus} />
 			<Song currentSong={currentSong} />
 			<Player
@@ -64,6 +70,7 @@ function App() {
 			<audio
 				onTimeUpdate={timeUpdateHandler}
 				onLoadedMetadata={timeUpdateHandler}
+				onEnded={handleAudioEnd}
 				ref={audioRef}
 				src={currentSong.audio}></audio>
 		</div>
